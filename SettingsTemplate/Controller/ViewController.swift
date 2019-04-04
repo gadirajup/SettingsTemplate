@@ -109,5 +109,18 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let section = SettingsSection(rawValue: indexPath.section) else { return }
+        
+        switch section {
+        case .Social:
+            let social = SocialOptions(rawValue: indexPath.row)
+            print("Open \(social?.description ?? "") View")
+        case .Communications:
+            //let communications = CommunicationOptions(rawValue: indexPath.row)
+            print("Do Nothing")
+        }
+    }
 }
 

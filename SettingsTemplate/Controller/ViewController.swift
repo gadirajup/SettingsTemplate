@@ -58,15 +58,55 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return SettingsSection.allCases.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        
+        guard let section = SettingsSection(rawValue: section) else {return 0}
+        
+        switch section {
+        case .Social: return SocialOptions.allCases.count
+        case .Communications: return CommunicationOptions.allCases.count
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        view.backgroundColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
+        
+        let title = UILabel()
+        title.text = SettingsSection(rawValue: section)?.description
+        title.font = UIFont.boldSystemFont(ofSize: 16)
+        title.textColor = .white
+        
+        view.addSubview(title)
+        
+        title.translatesAutoresizingMaskIntoConstraints = false
+        title.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        title.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
+        
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SettingsCell
+        
+        guard let section = SettingsSection(rawValue: indexPath.section) else { return UITableViewCell() }
+        
+        switch section {
+        case .Social:
+            let social = SocialOptions(rawValue: indexPath.row)
+            cell.sectionType = social
+        case .Communications:
+            let communications = CommunicationOptions(rawValue: indexPath.row)
+            cell.sectionType = communications
+        }
+        
         return cell
     }
 }

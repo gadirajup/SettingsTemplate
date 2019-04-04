@@ -8,9 +8,11 @@
 
 import UIKit
 
-private let reuseIdentifier = "SettingsCell"
-
 class ViewController: UIViewController {
+    
+    // MARK: - Constants
+    
+    private let reuseIdentifier = "SettingsCell"
     
     // MARK: - Properties
     
@@ -21,12 +23,22 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
+        
+        setupNavBar()
+        setupTableView()
     }
 
     // MARK: - Helper Functions
     
-    func configureTableView() {
+    fileprivate func setupNavBar() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
+        navigationItem.title = "Settings"
+    }
+    
+    fileprivate func setupTableView() {
         tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
@@ -41,20 +53,13 @@ class ViewController: UIViewController {
         tableView.tableHeaderView = userInfoHeader
         tableView.tableFooterView = UIView()
     }
-    
-    func configureUI() {
-        configureTableView()
-        
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.barTintColor = UIColor(red: 55/255, green: 120/255, blue: 250/255, alpha: 1)
-        navigationItem.title = "Settings"
-    }
-
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 5
@@ -64,7 +69,5 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SettingsCell
         return cell
     }
-    
-    
 }
 
